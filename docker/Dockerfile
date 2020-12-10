@@ -46,7 +46,3 @@ COPY --from=icalialabs/watchman:4-alpine3.4 /usr/local/bin/watchman* /usr/local/
 RUN mkdir -p /usr/local/var/run/watchman \
  && touch /usr/local/var/run/watchman/.not-empty
 
-
-
-
-
