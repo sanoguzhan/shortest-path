@@ -1,5 +1,10 @@
 #include <gtk/gtk.h>
 
+#include<stdlib.h>
+#include<stdio.h>
+#include"controller.h"
+
+
 static void on_activate (GtkApplication *app) {
   // Create a new window
   GtkWidget *window = gtk_application_window_new (app);
@@ -12,9 +17,13 @@ static void on_activate (GtkApplication *app) {
 }
 
 int main (int argc, char *argv[]) {
-  // Create a new application
+	// Create a new application
+
+	test();
   GtkApplication *app = gtk_application_new ("com.example.GtkApplication",
                                              G_APPLICATION_FLAGS_NONE);
   g_signal_connect (app, "activate", G_CALLBACK (on_activate), NULL);
   return g_application_run (G_APPLICATION (app), argc, argv);
+	puts("test");
+	return 0;
 }

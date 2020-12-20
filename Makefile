@@ -1,13 +1,13 @@
 SRC_DIR=src
 INCLUDE_DIR=include
-TEST_DIR=test
+TEST_DIR=tests
 BIN_DIR=bin
 TEST_BIN_DIR=$(TEST_DIR)/$(BIN_DIR)
 
 LIBS = gtk+-3.0
 
 CC=gcc
-CFLAGS += -Wall -g -02 
+CFLAGS += -Wall -g -I$(INCLUDE_DIR)/
 CFLAGS := $(shell pkg-config --cflags $(LIBS)) $(CFLAGS)
 LDLIBS := $(shell pkg-config --libs $(LIBS)) $(LDLIBS)
 
@@ -18,6 +18,7 @@ LINK_EXE=$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 SRC_FILES=$(wildcard $(SRC_DIR)/*.c)								
 SRC_OBJS=$(patsubst $(SRC_DIR)/%.c,$(BIN_DIR)/%.o, $(SRC_FILES))
 
+TARGET = $(wildcard $(SRC_OBJS)/*.o
 
 TEST_FILES=$(wildcard $(TEST_DIR)/*.c)
 TEST_OBJS=$(patsubst $(TEST_DIR)/%.c,$(TEST_BIN_DIR)/%.o, $(TEST_FILES))
@@ -35,9 +36,12 @@ $(TEST_BIN_DIR)/%.o: $(TEST_DIR)/%.c
 
 .phony: all src tests clean clean-src clean-tests 
 
-all: src tests
+all: src tests window 
 
-test: $(TEST_TARGETS)
+src: $(SRC_OBJS)
+
+tests: $(TEST_TARGETS)
+
 
 clean-test:
 	$(RM) $(TEST_EXE) $(TEST_OBJS)
@@ -48,3 +52,13 @@ clean-src:
 
 clean:
 	rm -rf $(BIN_DIR)/*
+
+
+
+window: $(SRC_OBJS) 
+	$(LINK_EXE)
+
+
+define EXE_OBJS
+	$(patsubst %, %.o, $(1)) $(patsubst %, $(BIN_DIR)/%.o, $(2))
+endef
