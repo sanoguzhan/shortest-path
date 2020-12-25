@@ -7,7 +7,8 @@ TEST_BIN_DIR=$(TEST_DIR)/$(BIN_DIR)
 LIBS = gtk+-3.0
 
 CC=gcc
-CFLAGS += -Wall -g -I$(INCLUDE_DIR)/
+
+CFLAGS += -std=c11 -Wall -g -I$(INCLUDE_DIR)/
 CFLAGS := $(shell pkg-config --cflags $(LIBS)) $(CFLAGS)
 LDLIBS := $(shell pkg-config --libs $(LIBS)) $(LDLIBS)
 
