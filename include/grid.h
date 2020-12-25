@@ -15,6 +15,6 @@ typedef struct Frame
 } Frame;
 
 
-Frame init_Frame();
+Frame init_frame();
 void print_grid(unsigned[N_DIM][N_DIM]);
 #endif

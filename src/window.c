@@ -9,7 +9,7 @@
 
 
 int main(int argc, char* argv[argc +1]){
-   Frame frame = init_Frame();
+   Frame frame = init_frame();
    frame.show = print_grid;
    frame.show(frame.GRID);
    frame.show(frame.index);

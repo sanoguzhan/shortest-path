@@ -1,7 +1,7 @@
 #include "grid.h"
 #include <stdio.h>
 
-Frame init_Frame(){
+Frame init_frame(){
    Frame frame;
    register unsigned loc = 0;
    for(size_t i=0; i< N_DIM; i++){
