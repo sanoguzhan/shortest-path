@@ -35,7 +35,7 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 $(TEST_BIN_DIR)/%.o: $(TEST_DIR)/%.c
 	$(COMPILE)
 
-.phony: all src clean clean-src clean-tests 
+.phony: all src clean clean-src clean-tests
 
 all: src window test
 
@@ -65,8 +65,10 @@ TST=$(TEST_BIN_DIR)/
 
 tests:$(TST)test_grid clean-test
 
+
+
 OBJS_BASE = grid
-$(TST)test_grid: $$(call EXE_OBJS,$$@,$(OBJS_BASE))
+$(TST)test_grid: $$(call EXE_OBJS,$$@,$(OBJS_BASE)) $(TEST_BIN_DIR)/utils.o
 	$(LINK_EXE)
 
 
