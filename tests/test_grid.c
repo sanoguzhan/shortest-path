@@ -5,14 +5,18 @@
 #include "utils.h"
 
 
+void test_grid_size(Frame frame){
+	struct logger* log = log_init();
+	assert(400 == (sizeof frame.GRID/ sizeof(unsigned)));
+	log->print("Succes",__func__);
+}
 
+void print_line();
 int main(void){
 
 	Frame frame = init_frame();
-	puts("Test::Frame_size.................");
-	assert(400 == (sizeof frame.GRID/ sizeof(unsigned)));
-	puts(__FILENAME__);
-	log_print("Succes");
-	// printf("%zu\n", );
+	test_grid_size(frame);
+
 	return 0;
+
 }

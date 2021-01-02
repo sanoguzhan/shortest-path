@@ -22,10 +22,30 @@
 
 
 
-inline void log_print(const char* log){
-    puts(log);
+typedef void (*func_l)(const char*,const char*);
+
+
+struct logger{
+    char* log;
+    char* cursor;
+    func_l print;
+};
+
+struct logger* log_init();
+
+inline void print_line(){
+       printf("%s", "................................................\n");
+}
+
+
+inline void log_print(const char log[static +1], const char name[static +1]){
+    print_line();
+    printf("Test::%s", name);
+    printf("%*s", 20, "Success\n");
+    print_line();
 
 }
 
+extern struct logger logger;
 
 #endif 
