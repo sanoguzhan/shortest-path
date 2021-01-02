@@ -42,10 +42,9 @@ inline void log_print(const char log[static +1], const char name[static +1]){
     print_line();
     printf("Test::%s", name);
     printf("%*s", 20, "Success\n");
-    print_line();
+    
 
 }
-
 extern struct logger logger;
 
 #endif 
