@@ -22,13 +22,11 @@
 
 
 
-typedef void (*func_l)(const char*,const char*);
-
 
 struct logger{
     char* log;
     char* cursor;
-    func_l print;
+    void (*print)(const char*, const char*);
 };
 
 struct logger* log_init();

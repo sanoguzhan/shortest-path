@@ -2,7 +2,7 @@
 #define __GRID_
 
 
-#define N_DIM 20
+#define N_DIM 10
 
 
 typedef void (*func)(unsigned grid[N_DIM][N_DIM]);
