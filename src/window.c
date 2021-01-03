@@ -17,6 +17,6 @@ int main(int argc, char* argv[argc +1]){
 
     int point[2] = {9,10};
 
-   //create_path(frame.GRID, 1, point, point);
+   create_path(frame.GRID, point, point);
     return 0;
 }

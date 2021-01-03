@@ -5,6 +5,8 @@
 #include<stdio.h>
 #include<string.h>
 #include "grid.h"
+
+#define STEP 1
 typedef struct Node{
     double f;
     double g;
@@ -17,7 +19,7 @@ typedef struct Node{
 
 
 
-int** create_path(int[N_DIM][N_DIM], int , int[2],
+int** create_path(int(*)[N_DIM] , int[2],
     int[2]);
 
 #endif
