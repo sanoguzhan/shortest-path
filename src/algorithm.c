@@ -1,5 +1,16 @@
+#include<stdio.h>
 #include "algorithm.h"
 #include "math.h"
+
+
+void add_link(Node* list, Node* node){
+    Node* nTemp = malloc(sizeof(Node));
+    nTemp = list;
+    while(nTemp->next){
+        nTemp = list->next;
+    }
+    nTemp->next = node;
+}
 
 int** create_path(int coordinate[N_DIM][N_DIM], int point_start[2],
     int point_end[2]){
@@ -17,10 +28,10 @@ int** create_path(int coordinate[N_DIM][N_DIM], int point_start[2],
     const int MAXITER = pow((N_DIM / 2), 10);
     static int iter = 0;
     static int index = 0;
-    int move[4][2] = {{-1, 0},  //up
-                      {0, -1},  //left
-                      {1, 0},   //down
-                      {0, 1}};   //right
+    int move[4][2] = {{-1, 0},  // up
+                      {0, -1},  // left
+                      {1, 0},   // down
+                      {0, 1}};  // right
 
     Node* nodes_check = calloc(N_DIM*N_DIM,sizeof(Node));
 

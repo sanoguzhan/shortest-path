@@ -12,14 +12,14 @@ typedef struct Node{
     double g;
     double h;
 
-    struct Node* next;
     int points[2];
+    struct Node* next;
 
 } Node;
 
-
-
+void add_link(Node*, Node*);
 int** create_path(int(*)[N_DIM], int[2], int[2]);
+
 
 inline unsigned get_current_node(unsigned size, Node* nodes, Node* node){
     unsigned indx = 0;
