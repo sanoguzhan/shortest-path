@@ -12,39 +12,66 @@ void add_link(Node* list, Node* node){
     nTemp->next = node;
 }
 
-int** create_path(int coordinate[N_DIM][N_DIM], int point_start[2],
-    int point_end[2]){
-    struct Node* initial = malloc(sizeof(Node));
-    struct Node* end = malloc(sizeof(Node));
-
-    memcpy(initial->points, point_start, sizeof(int)*2);
-    memcpy(end->points, point_end, sizeof(int)*2);
-
+int** create_path(int coordinate[N_DIM][N_DIM], 
+                  int point_start[2],
+                  int point_end[2]){
+ 
+    struct Node* boundaries = (Node*)malloc(2*sizeof(Node));
+    struct Node* nTemp= NULL;
+    memcpy(boundaries[0].points, point_start, sizeof(int)*2);
+    memcpy(boundaries[1].points, point_end, sizeof(int)*2);
 
     for(int i = 0; i < 2; i++){
-        printf("%d",initial->points[i]);
+        printf("%d\n",boundaries[i].points[i]);
     }
 
     const int MAXITER = pow((N_DIM / 2), 10);
-    static int iter = 0;
     static int index = 0;
+    static int counter = 0;
     int move[4][2] = {{-1, 0},  // up
                       {0, -1},  // left
                       {1, 0},   // down
                       {0, 1}};  // right
 
-    Node* nodes_check = calloc(N_DIM*N_DIM,sizeof(Node));
+    Thread* checks = calloc(1000,sizeof(Thread));
+    Thread* sNode = NULL;
+    Thread* iter = NULL;
+    Thread* finished = NULL;    
 
-    Node* node = calloc(1,sizeof(Node));
-    do
-    {
-       iter++;
-       node = &nodes_check[index];
+    checks->node = &boundaries[0];
+    nTemp = boundaries;
+    sNode = checks;    
+    
+    while(sNode != NULL){
+        counter++;
+        iter = sNode;
+        int i =0;
+        while(iter != NULL){
+            if(iter->node->f < nTemp->f){
+                nTemp = iter->node;
+                index = i;
+            }
+            i++;
+            iter = iter->next;          
+        }
 
-       
+        if(MAXITER < counter){
+            exit(1);
+        }
+        sNode = sNode->next;
 
-    } while (node != NULL);
+        move_node(checks, finished, counter);
+        if(compare_nodes(nTemp, &boundaries[1])){
+            exit(0); // Done
+        }
 
+        for(int j=0; j<4;j++){
+            printf("%d %d\n", move[j][0], move[j][1]);
+        }
+
+    }
+    
 }
 
-unsigned get_current_node(unsigned, Node*, Node*);
+static short compare_nodes(const Node*, const Node*);
+static void move_node(Thread*, Thread*, const int counter);

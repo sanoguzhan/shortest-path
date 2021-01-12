@@ -17,21 +17,46 @@ typedef struct Node{
 
 } Node;
 
+
+typedef struct Thread{
+    Node* node;
+    struct Thread* next;
+} Thread;
+
 void add_link(Node*, Node*);
-int** create_path(int(*)[N_DIM], int[2], int[2]);
+int** create_path(int[N_DIM][N_DIM], int[2], int[2]);
 
 
-inline unsigned get_current_node(unsigned size, Node* nodes, Node* node){
-    unsigned indx = 0;
-    unsigned found = 0;
-    for(unsigned i = 0; i <size; i++){
-        if(nodes[i].f < node->f){
-            node = &node[i];
-            found = indx;
+inline static void move_node(Thread* from, Thread* to, const int bound){
+    if(bound < 2 && bound >0){
+        while(from->next != NULL){
+            from = from->next;
+        }         
+    }else{
+       while(from->next->next != NULL){
+            from = from->next;
         }
-        indx++;
     }
-    return found;
+    if(to != NULL){
+        while (to->next != NULL){
+            to = to->next;
+        }
+    }
+   if (to == NULL && from->next != NULL){
+        to = from->next;
+   }
+   else if(to == NULL && from->next == NULL){
+       to = from;
+   }
+   else{
+       to->next = from->next;
+   }
 }
 
+inline static short compare_nodes(const Node* left, const Node* right){
+    if(left->points[0] == right->points[0] &&
+        left->points[1] == right->points[1])
+        return 1;
+    return 0;
+}
 #endif
