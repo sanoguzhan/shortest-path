@@ -9,19 +9,10 @@
 
 void test_thread_link(struct logger* log){
     Node* initial = malloc(sizeof(Node));
-    Node* second = malloc(sizeof(Node));
-    Node* test = malloc(sizeof(Node));
-    test->f = 100;
-    add_link(initial, second);
-    add_link(initial, test);
-    Node* tNode = initial;
-    
-    while(tNode->next){
-        tNode = tNode->next;
-    }
 
-    assert((int)tNode->f == 100);
-    assert(test == tNode);
+    initial->f = 100;
+
+    assert((int)initial->f == 100);
     
     log->print("Success", __func__);
 }

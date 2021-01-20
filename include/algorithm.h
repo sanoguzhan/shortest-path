@@ -4,53 +4,40 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
+#include<stdbool.h>
 #include "grid.h"
 
 #define STEP_SIZE 1
+static int dSize;
+
 typedef struct Node{
     double f;
     double g;
     double h;
 
     int points[2];
-    struct Node* next;
+
+    bool state;
+    struct Node* parent;
 
 } Node;
 
 
-typedef struct Thread{
-    Node* node;
-    struct Thread* next;
-} Thread;
 
-void add_link(Node*, Node*);
+void add_parent(Node*, Node*);
 int** create_path(int[N_DIM][N_DIM], int[2], int[2]);
 
-
-inline static void move_node(Thread* from, Thread* to, const int bound){
-    if(bound < 2 && bound >0){
-        while(from->next != NULL){
-            from = from->next;
-        }         
-    }else{
-       while(from->next->next != NULL){
-            from = from->next;
+inline int mv_current_node(Node* vList, Node* current_node, const int size){
+      int i;
+      for(i=0; i < size; i++){
+            if(vList[i].f < current_node->f){
+                if(!vList[i].state){
+                    current_node = &vList[i];
+                    vList[i].state = true;
+                }
+            }
         }
-    }
-    if(to != NULL){
-        while (to->next != NULL){
-            to = to->next;
-        }
-    }
-   if (to == NULL && from->next != NULL){
-        to = from->next;
-   }
-   else if(to == NULL && from->next == NULL){
-       to = from;
-   }
-   else{
-       to->next = from->next;
-   }
+        return i;
 }
 
 inline static short compare_nodes(const Node* left, const Node* right){

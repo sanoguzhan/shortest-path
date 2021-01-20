@@ -1,6 +1,7 @@
 #include "grid.h"
 #include <stdio.h>
 
+
 Frame init_frame(){
    Frame frame;
    register unsigned loc = 0;

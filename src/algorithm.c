@@ -3,21 +3,22 @@
 #include "math.h"
 
 
-void add_link(Node* list, Node* node){
-    Node* nTemp = malloc(sizeof(Node));
-    nTemp = list;
-    while(nTemp->next){
-        nTemp = list->next;
-    }
-    nTemp->next = node;
+void add_parent(Node* node, Node* parent){
+    node->parent = parent;
 }
 
-int** create_path(int coordinate[N_DIM][N_DIM], 
+int** create_path(int maze[N_DIM][N_DIM], 
                   int point_start[2],
                   int point_end[2]){
- 
-    struct Node* boundaries = (Node*)malloc(2*sizeof(Node));
-    struct Node* nTemp= NULL;
+
+    const int MAXITER = pow((N_DIM / 2), 10);
+    static int index = 0;
+    static int counter = 0;
+    static int size_vList = 2*1000;
+
+    struct Node* boundaries = malloc(2*sizeof(Node));
+    struct Node* vList = malloc(size_vList*sizeof(Node));
+    struct Node current_node, tNode;
     memcpy(boundaries[0].points, point_start, sizeof(int)*2);
     memcpy(boundaries[1].points, point_end, sizeof(int)*2);
 
@@ -25,53 +26,43 @@ int** create_path(int coordinate[N_DIM][N_DIM],
         printf("%d\n",boundaries[i].points[i]);
     }
 
-    const int MAXITER = pow((N_DIM / 2), 10);
-    static int index = 0;
-    static int counter = 0;
+    int position[2];
     int move[4][2] = {{-1, 0},  // up
                       {0, -1},  // left
                       {1, 0},   // down
                       {0, 1}};  // right
 
-    Thread* checks = calloc(1000,sizeof(Thread));
-    Thread* sNode = NULL;
-    Thread* iter = NULL;
-    Thread* finished = NULL;    
+    vList[0] = boundaries[0];
+    dSize = 1;
 
-    checks->node = &boundaries[0];
-    nTemp = boundaries;
-    sNode = checks;    
-    
-    while(sNode != NULL){
-        counter++;
-        iter = sNode;
-        int i =0;
-        while(iter != NULL){
-            if(iter->node->f < nTemp->f){
-                nTemp = iter->node;
-                index = i;
-            }
-            i++;
-            iter = iter->next;          
-        }
+    while(counter > 0){
 
-        if(MAXITER < counter){
-            exit(1);
-        }
-        sNode = sNode->next;
+        current_node = vList[0];
+        index = mv_current_node(vList, &current_node, dSize);
 
-        move_node(checks, finished, counter);
-        if(compare_nodes(nTemp, &boundaries[1])){
-            exit(0); // Done
-        }
+        for(int i=0; i<4; i++){
+            position[0] = current_node.points[0] + move[i][0];
+            position[1] = current_node.points[1] + move[i][1];
 
-        for(int j=0; j<4;j++){
-            printf("%d %d\n", move[j][0], move[j][1]);
+            if(position[0] > (N_DIM -1)
+                || position[0] < 0
+                || position[1] > (N_DIM -1)
+                || position[1] < 0){continue;}
+
+            if(maze[position[0]][position[1]] != 0){continue;}
+
+            tNode = (Node){
+                .f=current_node.f,
+                .g=current_node.g,
+                .h=current_node.h,
+            };
+            memcpy(tNode.points, position, sizeof(int)*2);
         }
+  
+        
 
     }
-    
-}
 
+}
+int mv_current_node(Node*, Node*, const int);
 static short compare_nodes(const Node*, const Node*);
-static void move_node(Thread*, Thread*, const int counter);

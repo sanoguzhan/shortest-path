@@ -1,7 +1,6 @@
 #ifndef __GRID_
 #define __GRID_
 
-
 #define N_DIM 10
 
 
