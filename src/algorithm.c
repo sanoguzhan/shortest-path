@@ -7,7 +7,7 @@ void add_parent(Node* node, Node* parent){
     node->parent = parent;
 }
 
-int** create_path(int maze[N_DIM][N_DIM], 
+int** create_path(int* maze[N_DIM], 
                   int point_start[2],
                   int point_end[2]){
 
@@ -18,7 +18,9 @@ int** create_path(int maze[N_DIM][N_DIM],
 
     struct Node* boundaries = malloc(2*sizeof(Node));
     struct Node* vList = malloc(size_vList*sizeof(Node));
-    struct Node current_node, tNode;
+    struct Node* childs = malloc(size_vList*sizeof(Node));
+    struct Node* current_node = malloc(sizeof(Node));
+    struct Node tNode;
     memcpy(boundaries[0].points, point_start, sizeof(int)*2);
     memcpy(boundaries[1].points, point_end, sizeof(int)*2);
 
@@ -27,7 +29,7 @@ int** create_path(int maze[N_DIM][N_DIM],
     }
 
     int position[2];
-    int move[4][2] = {{-1, 0},  // up
+    int moves[4][2] = {{-1, 0},  // up
                       {0, -1},  // left
                       {1, 0},   // down
                       {0, 1}};  // right
@@ -37,12 +39,12 @@ int** create_path(int maze[N_DIM][N_DIM],
 
     while(counter > 0){
 
-        current_node = vList[0];
-        index = mv_current_node(vList, &current_node, dSize);
+        *current_node = vList[0];
+        index = mv_current_node(vList, current_node, dSize);
 
         for(int i=0; i<4; i++){
-            position[0] = current_node.points[0] + move[i][0];
-            position[1] = current_node.points[1] + move[i][1];
+            position[0] = current_node->points[0] + moves[i][0];
+            position[1] = current_node->points[1] + moves[i][1];
 
             if(position[0] > (N_DIM -1)
                 || position[0] < 0
@@ -51,18 +53,34 @@ int** create_path(int maze[N_DIM][N_DIM],
 
             if(maze[position[0]][position[1]] != 0){continue;}
 
-            tNode = (Node){
-                .f=current_node.f,
-                .g=current_node.g,
-                .h=current_node.h,
-            };
-            memcpy(tNode.points, position, sizeof(int)*2);
+         
         }
-  
-        
+
+        relate(childs, current_node, position);
+
+        for(int i=0; i<size_vList;i++){
+            if(childs[i].state){
+                continue;
+            }
+            if(childs[i].hold){
+                childs[i].g = current_node->g + STEP_SIZE;
+                childs[i].h = (pow((childs[i].points[0] - point_end[0]),2) +
+                            pow((childs[i].points[1] - point_end[1]),2));
+            childs[i].f = childs[i].g + childs[i].h;
+            if(is_child(childs, vList, size_vList)){
+                continue;
+                }            
+
+            insert_vlist(vList, childs[i], size_vList);
+            }                                
+        }
 
     }
 
 }
+
+bool insert_vlist(Node*, Node, int);
+bool is_child(Node*, Node*, int);
+void relate(Node* childs, Node* cNode, int coor[]);
 int mv_current_node(Node*, Node*, const int);
 static short compare_nodes(const Node*, const Node*);
