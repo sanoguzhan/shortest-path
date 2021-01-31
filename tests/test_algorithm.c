@@ -29,7 +29,7 @@ int main(void){
    frame.show = print_grid;
 
    frame.show(frame.GRID);
-    create_path(&frame.GRID, begin, end);
+    solve(frame.GRID, begin, end);
     test_thread_link(log);
 
 }
