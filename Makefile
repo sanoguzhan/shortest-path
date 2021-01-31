@@ -63,12 +63,16 @@ TST=$(TEST_BIN_DIR)/
 .SECONDEXPANSION:
 
 
-tests:$(TST)test_grid clean-test
+tests:$(TST)test_grid $(TST)test_algorithm  clean-test 
 
 
 
 OBJS_BASE = grid
 $(TST)test_grid: $$(call EXE_OBJS,$$@,$(OBJS_BASE)) $(TEST_BIN_DIR)/utils.o
+	$(LINK_EXE)
+
+OBJS_BASE = grid
+$(TST)test_algorithm: $$(call EXE_OBJS,$$@,$(OBJS_BASE)) $(TEST_BIN_DIR)/utils.o $(BIN_DIR)/algorithm.o
 	$(LINK_EXE)
 
 

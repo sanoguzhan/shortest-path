@@ -22,13 +22,11 @@
 
 
 
-typedef void (*func_l)(const char*,const char*);
-
 
 struct logger{
     char* log;
     char* cursor;
-    func_l print;
+    void (*print)(const char*, const char*);
 };
 
 struct logger* log_init();
@@ -38,7 +36,7 @@ inline void print_line(){
 }
 
 
-inline void log_print(const char log[static +1], const char name[static +1]){
+inline static void log_print(const char log[static +1], const char name[static +1]){
     print_line();
     printf("Test::%s", name);
     printf("%*s", 20, "Success\n");
